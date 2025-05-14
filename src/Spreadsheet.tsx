@@ -389,7 +389,13 @@ const Spreadsheet = <SpreadsheetRef, CellType extends Types.CellBase>(
         event.preventDefault();
         event.stopPropagation();
         if (event.clipboardData) {
-          const text = readTextFromClipboard(event);
+          let text = readTextFromClipboard(event).trim(); // Remove leading/trailing newlines
+          const rows = text
+            .split("\n")
+            .map((row) => row.trim())
+            .filter((row) => row !== ""); // Remove empty rows
+          text = rows.join("\n"); // Reconstruct cleaned text
+          console.log("Cleaned Paste Text:", text); // Debug
           paste(text);
         }
       }
